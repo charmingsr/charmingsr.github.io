@@ -2,201 +2,86 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Genshin Wunschrechner</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meine Projekte</title>
   <style>
-    :root {
-      --bg: #292c2f;
-      --text: #f9fafb;
-      --card: #353d3f;
-      --highlight: #f59e0b;
-    }
-
-    * {
-      box-sizing: border-box;
-      transition: background 0.3s, color 0.3s;
-    }
-
+    /* Grundlegendes Styling */
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 2rem auto 2rem;
-      padding: 2rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1a1a1a 0%, #0a0a0a 100%);
     }
 
     h1 {
-      text-align: center;
-      font-weight: 600;
-      margin-top: 0;
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #00f0ff, #ff00cc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    label {
+    .projects {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .project-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 240px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .project-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 0, 200, 0.3);
+    }
+
+    .project-card a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.2rem;
       display: block;
-      margin-top: 1.2rem;
-      font-weight: 600;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      background: var(--card);
-      color: var(--text);
-    }
-
-    button {
-      margin-top: 2rem;
-      width: 100%;
-      padding: 0.9rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border: none;
+      margin-top: 1rem;
+      background: linear-gradient(90deg, #00f0ff, #ff00cc);
+      padding: 0.5rem 1rem;
       border-radius: 8px;
-      background-color: #2874b2;
-      color: white;
-      cursor: pointer;
+      transition: background 0.3s ease;
     }
 
-    button:hover {
-      background-color: #2b5c83;
-    }
-
-    .result {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background: var(--card);
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .highlight {
-      color: var(--highlight);
-      font-weight: 600;
+    .project-card a:hover {
+      background: linear-gradient(90deg, #ff00cc, #00f0ff);
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Genshin Wunschrechner</h1>
-
-    <label for="wishDate">Wunschdatum</label>
-    <input type="date" id="wishDate" />
-
-    <label for="currentPity">Aktueller Pity (0–90)</label>
-    <input type="number" id="currentPity" min="0" max="90" value="0" />
-
-    <label for="currentPrimogems">Aktuelle Primogems</label>
-    <input type="number" id="currentPrimogems" min="0" value="0" />
-
-    <label for="optionalPrimogems">Optionale Primogems</label>
-    <input type="number" id="optionalPrimogems" min="0" value="0" />
-
-    <label for="welkin">Welkin vorhanden?</label>
-    <select id="welkin">
-      <option value="true">Ja (150 Primogems pro Tag)</option>
-      <option value="false" selected>Nein (60 Primogems pro Tag)</option>
-    </select>
-
-    <label for="fiftyfiftyOpen">50/50 offen?</label>
-    <select id="fiftyfiftyOpen">
-      <option value="true">Ja</option>
-      <option value="false" selected>Nein</option>
-    </select>
-
-    <button id="calcBtn">Berechnen</button>
-
-    <div id="result" class="result" style="display:none;"></div>
+  <h1>📁 Meine Projekte</h1>
+  <div class="projects">
+    <div class="project-card">
+      <h2>Wish Counter</h2>
+      <p>Tracken von Genshin Wishes</p>
+      <a href="genshin.html">Ansehen</a>
+    </div>
+    <div class="project-card">
+      <h2>Katzenbuch</h2>
+      <p>Cats and Friends</p>
+      <a href="katzenbuch.html">Ansehen</a>
+    </div>
+	
   </div>
-
-  <script>
-    function daysBetween(today, wishDate) {
-      const diffTime = wishDate.getTime() - today.getTime();
-      return Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1);
-    }
-
-    function count15and31(today, wishDate) {
-      let count15 = 0, count31 = 0;
-      let date = new Date(today);
-      while (date <= wishDate) {
-        if (date.getDate() === 15) count15++;
-        if (date.getDate() === 31) count31++;
-        date.setDate(date.getDate() + 1);
-      }
-      return { count15, count31 };
-    }
-
-    function count42DayCycles(today, wishDate) {
-      const diffDays = Math.floor((wishDate - today) / (1000 * 60 * 60 * 24));
-      if (diffDays < 0) return 0;
-      return Math.floor(diffDays / 42);
-    }
-
-    function wishesFromPrimogems(p) {
-      return Math.floor(p / 160);
-    }
-
-    document.getElementById('calcBtn').addEventListener('click', () => {
-      const today = new Date();
-      const wishDateInput = document.getElementById('wishDate').value;
-      if (!wishDateInput) {
-        alert('Bitte Wunschdatum eingeben!');
-        return;
-      }
-
-      const wishDate = new Date(wishDateInput);
-      if (wishDate < today) {
-        alert('Wunschdatum muss in der Zukunft liegen!');
-        return;
-      }
-
-      const pity = Number(document.getElementById('currentPity').value);
-      const primos = Number(document.getElementById('currentPrimogems').value);
-      const optional = Number(document.getElementById('optionalPrimogems').value);
-      const welkin = document.getElementById('welkin').value === 'true';
-      const fiftyfifty = document.getElementById('fiftyfiftyOpen').value === 'true';
-
-      const days = daysBetween(today, wishDate);
-      const { count15, count31 } = count15and31(today, wishDate);
-      const cycles42 = count42DayCycles(today, wishDate);
-      const dailyPrimos = welkin ? 150 : 60;
-
-      const primosFromDays = days * dailyPrimos;
-      const primosFrom15 = count15 * 800;
-      const primosFrom31 = count31 * 800;
-      const primosFromCycles = cycles42 * 900;
-
-      const totalPrimos = primos + optional + primosFromDays + primosFrom15 + primosFrom31 + primosFromCycles;
-      const wishes = wishesFromPrimogems(totalPrimos);
-      const extraWishes = count31 * 5;
-      const totalWishes = wishes + extraWishes;
-
-      const pullsToNext5Star = Math.max(0, 90 - pity - totalWishes);
-      const pullsToLimited = Math.max(0, (fiftyfifty ? 180 : 90) - pity - totalWishes);
-
-      const resultDiv = document.getElementById('result');
-      resultDiv.style.display = 'block';
-      resultDiv.innerHTML = `
-        <h2>Ergebnisse</h2>
-        <p>Tage bis zum Ziel: <strong>${days}</strong></p>
-        <p>Patch/Livestream Primogems: <strong>${primosFromCycles}</strong></p>
-        <p>Spiral Abyss: <strong>${count15 * 800}</strong></p>
-        <p>Theater: <strong>${count31 * 800}</strong></p>
-        <p>Gesamte Primogems: <strong>${totalPrimos.toLocaleString()}</strong></p>
-        <p>Wünsche: <strong>${totalWishes}</strong></p>
-        <p class="highlight">Pulls bis nächster 5★: ${pullsToNext5Star <= 0 ? 'Genug!' : pullsToNext5Star}</p>
-        <p class="highlight">Pulls bis garantierter Limited 5★: ${pullsToLimited <= 0 ? 'Genug!' : pullsToLimited}</p>
-      `;
-    });
-  </script>
 </body>
 </html>

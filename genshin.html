@@ -86,6 +86,7 @@
   </style>
 </head>
 <body>
+
   <div class="container">
     <h1>Genshin Wunschrechner</h1>
 
@@ -116,6 +117,10 @@
     <button id="calcBtn">Berechnen</button>
 
     <div id="result" class="result" style="display:none;"></div>
+
+    <button onclick="window.location.href='index.html'" style="margin-top: 1rem; padding: 0.6rem 1.2rem; border-radius: 6px; border: none; color: white; cursor: pointer; font-weight: 600;">
+      andere Projekte
+    </button>
   </div>
 
   <script>
@@ -196,6 +201,30 @@
         <p class="highlight">Pulls bis nächster 5★: ${pullsToNext5Star <= 0 ? 'Genug!' : pullsToNext5Star}</p>
         <p class="highlight">Pulls bis garantierter Limited 5★: ${pullsToLimited <= 0 ? 'Genug!' : pullsToLimited}</p>
       `;
+    });
+
+    const fields = [
+      "wishDate",
+      "currentPity",
+      "currentPrimogems",
+      "optionalPrimogems",
+      "welkin",
+      "fiftyfiftyOpen"
+    ];
+
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", () => {
+        localStorage.setItem("genshin_" + id, el.value);
+      });
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      fields.forEach(id => {
+        const el = document.getElementById(id);
+        const saved = localStorage.getItem("genshin_" + id);
+        if (saved !== null) el.value = saved;
+      });
     });
   </script>
 </body>

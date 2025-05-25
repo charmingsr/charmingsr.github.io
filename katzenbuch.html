@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>identity meows</title>
+  <link rel="icon" type="image/jpeg" href="src/favicon.ico" />
+  <style>
+    :root {
+      --color-bg-light: #f5f5f7;
+      --color-text-light: #1d1d1f;
+      --color-bg-dark: #121212;
+      --color-text-dark: #e5e5e7;
+      --color-accent: #0071e3;
+      --color-accent-dark: #3390ff;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--color-bg-light);
+      color: var(--color-text-light);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-dark);
+    }
+    header {
+      background-color: #fff;
+      border-bottom: 1px solid #d2d2d7;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+    }
+    body.dark-mode header {
+      background-color: #1e1e1e;
+      border-color: #333;
+    }
+    header h1 {
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    /* Hamburger Button */
+    #hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 30px;
+      height: 24px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 20px;
+    }
+    #hamburger span {
+      width: 100%;
+      height: 3px;
+      background: var(--color-text-light);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    /* Hamburger animiert wenn aktiv */
+    #hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    #hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+    /* Navigation */
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--color-text-light);
+      font-weight: 500;
+    }
+    body.dark-mode nav ul li a {
+      color: var(--color-text-dark);
+    }
+    nav ul li a:hover,
+    nav ul li a:focus {
+      color: var(--color-accent);
+      outline: none;
+    }
+    /* Dropdown */
+    .dropdown > button {
+      background: none;
+      border: none;
+      font: inherit;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--color-text-light);
+      position: relative;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+    body.dark-mode .dropdown > button {
+      color: var(--color-text-dark);
+    }
+    .dropdown > button:hover,
+    .dropdown > button:focus {
+      background-color: var(--color-accent);
+      color: white;
+      outline: none;
+    }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #fff;
+      border: 1px solid #d2d2d7;
+      border-radius: 5px;
+      padding: 10px 0;
+      display: none;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .dropdown-menu li {
+      padding: 0;
+    }
+    .dropdown-menu li a {
+      display: block;
+      padding: 8px 15px;
+      color: var(--color-text-light);
+      text-decoration: none;
+    }
+    body.dark-mode .dropdown-menu li a {
+      color: var(--color-text-dark);
+    }
+    .dropdown-menu li a:hover,
+    .dropdown-menu li a:focus {
+      background-color: var(--color-accent);
+      color: white;
+      outline: none;
+    }
+    /* Dropdown sichtbar bei Hover auf Desktop */
+    @media (hover: hover) and (pointer: fine) {
+      .dropdown:hover .dropdown-menu {
+        display: flex;
+      }
+    }
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      #hamburger {
+        display: flex;
+      }
+      nav {
+        width: 100%;
+        order: 3;
+        display: none;
+        background-color: var(--color-bg-light);
+        padding: 10px 0;
+        border-top: 1px solid #d2d2d7;
+      }
+      body.dark-mode nav {
+        background-color: var(--color-bg-dark);
+        border-color: #333;
+      }
+      nav.active {
+        display: block;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 0;
+      }
+      .dropdown-menu {
+        position: static;
+        border: none;
+        box-shadow: none;
+        padding-left: 15px;
+      }
+      /* Dropdown klappt aus bei Mobile */
+      .dropdown-menu.active {
+        display: flex;
+        flex-direction: column;
+      }
+      .dropdown > button {
+        width: 100%;
+        text-align: left;
+        padding: 10px 15px;
+        border-radius: 0;
+        background-color: var(--color-bg-light);
+      }
+      body.dark-mode .dropdown > button {
+        background-color: var(--color-bg-dark);
+      }
+    }
+    /* Toggle Switch */
+    .toggle-switch {
+      cursor: pointer;
+      width: 40px;
+      height: 22px;
+      background: #ccc;
+      border-radius: 15px;
+      position: relative;
+      flex-shrink: 0;
+      margin-left: 20px;
+    }
+    .toggle-switch::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s;
+    }
+    .toggle-switch.active {
+      background: var(--color-accent);
+    }
+    .toggle-switch.active::after {
+      transform: translateX(18px);
+    }
+    /* Main Content */
+    main {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .gallery a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .gallery img {
+      width: 250px;
+      height: 250px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      object-fit: cover;
+      transition: transform 0.3s;
+      display: block;
+      margin: 0 auto;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+    .caption {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+    footer {
+      margin-top: 60px;
+      padding: 20px 40px;
+      text-align: center;
+      font-size: 0.875rem;
+      color: #6e6e73;
+      border-top: 1px solid #d2d2d7;
+    }
+    body.dark-mode footer {
+      border-color: #333;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Katzenbuch</h1>
+    
+    <button id="hamburger" aria-label="Navigation öffnen" aria-expanded="false" aria-controls="main-nav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <nav id="main-nav">
+      <ul>
+        <li><a href="index.html">Projekte</a></li>
+        <li class="dropdown">
+          <button aria-haspopup="true" aria-expanded="false" id="katzen-btn">Katzen ▾</button>
+          <ul class="dropdown-menu" aria-label="Katzen Menü">
+            <li><a href="katzen/Lara.html">Lara</a></li>
+            <li><a href="katzen/Luna.html">Luna</a></li>
+            <li><a href="katzen/Sheila.html">Sheila</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="toggle-switch" id="dark-mode-toggle" role="switch" aria-checked="false" tabindex="0" title="Dark Mode ein-/ausschalten"></div>
+  </header>
+
+  <main>
+    <section class="gallery">
+      <a href="katzen/Lara.html" title="Katzen Lara öffnen">
+        <img src="img/Lara/Lara5.jpg" alt="Foto der Katze Lara" />
+        <div class="caption">Lara</div>
+      </a>
+      <a href="katzen/Luna.html" title="Katzen Luna öffnen">
+        <img src="img/Luna/Luna.jpg" alt="Foto der Katze Luna" />
+        <div class="caption">Luna</div>
+      </a>
+      <a href="katzen/Sheila.html" title="Katzen Sheila öffnen">
+        <img src="img/Sheila/Sheila11.jpg" alt="Foto der Katze Sheila" />
+        <div class="caption">Sheila</div>
+      </a>
+      
+	  
+	  
+	  
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Meowmeowmeowmeow :3
+  </footer>
+
+  <script>
+    // Hamburger Menü Toggle
+    const hamburger = document.getElementById('hamburger');
+    const nav = document.getElementById('main-nav');
+    const katzenBtn = document.getElementById('katzen-btn');
+    const katzenMenu = katzenBtn.nextElementSibling;
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      nav.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+    });
+
+    // Katzen Dropdown Toggle Mobile
+    katzenBtn.addEventListener('click', () => {
+      katzenMenu.classList.toggle('active');
+      const expanded = katzenBtn.getAttribute('aria-expanded') === 'true';
+      katzenBtn.setAttribute('aria-expanded', !expanded);
+    });
+
+    // Dark Mode Toggle
+    const toggleSwitch = document.getElementById('dark-mode-toggle');
+    const body = document.body;
+
+    // Lokalen Status laden
+    if (localStorage.getItem('dark-mode') === 'enabled') {
+      body.classList.add('dark-mode');
+      toggleSwitch.classList.add('active');
+      toggleSwitch.setAttribute('aria-checked', 'true');
+    }
+
+    toggleSwitch.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      toggleSwitch.classList.toggle('active');
+      const isDark = body.classList.contains('dark-mode');
+      toggleSwitch.setAttribute('aria-checked', isDark.toString());
+      localStorage.setItem('dark-mode', isDark ? 'enabled' : 'disabled');
+    });
+
+    // Tastatursteuerung für Darkmode-Switch
+    toggleSwitch.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleSwitch.click();
+      }
+    });
+  </script>
+</body>
+</html>
