@@ -355,32 +355,30 @@
       katzenBtn.setAttribute('aria-expanded', !expanded);
     });
 
-    // Dark Mode Toggle
-    const toggleSwitch = document.getElementById('dark-mode-toggle');
-    const body = document.body;
+    // Darkmode toggle mit localStorage
+const toggleSwitch = document.getElementById('dark-mode-toggle');
+const body = document.body;
 
-    // Lokalen Status laden
-    if (localStorage.getItem('dark-mode') === 'enabled') {
-      body.classList.add('dark-mode');
-      toggleSwitch.classList.add('active');
-      toggleSwitch.setAttribute('aria-checked', 'true');
-    }
+// Zustand wiederherstellen
+if (localStorage.getItem('dark-mode') === 'true') {
+  body.classList.add('dark-mode');
+  toggleSwitch.classList.add('active');
+}
 
-    toggleSwitch.addEventListener('click', () => {
-      body.classList.toggle('dark-mode');
-      toggleSwitch.classList.toggle('active');
-      const isDark = body.classList.contains('dark-mode');
-      toggleSwitch.setAttribute('aria-checked', isDark.toString());
-      localStorage.setItem('dark-mode', isDark ? 'enabled' : 'disabled');
-    });
+// Toggle per Klick
+toggleSwitch.addEventListener('click', () => {
+  const isDark = body.classList.toggle('dark-mode');
+  toggleSwitch.classList.toggle('active');
+  localStorage.setItem('dark-mode', isDark);
+});
 
-    // Tastatursteuerung für Darkmode-Switch
-    toggleSwitch.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleSwitch.click();
-      }
-    });
+// Tastatursteuerung
+toggleSwitch.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    toggleSwitch.click();
+  }
+});
   </script>
 </body>
 </html>
